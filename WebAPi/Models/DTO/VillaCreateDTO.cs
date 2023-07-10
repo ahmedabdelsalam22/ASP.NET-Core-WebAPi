@@ -2,9 +2,8 @@
 
 namespace WebAPi.Models.DTO
 {
-    public class VillaUpdateDTO
+    public class VillaCreateDTO
     {
-        public int Id { get; set; }
         [Required]
         [MaxLength(30)]
         [MinLength(5)]
