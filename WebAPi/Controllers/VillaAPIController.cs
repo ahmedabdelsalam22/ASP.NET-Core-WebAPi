@@ -12,16 +12,16 @@ namespace WebAPi.Controllers
     public class VillaAPIController : ControllerBase
     {
         [HttpGet]
-        [ProducesResponseType(200)]
-        public ActionResult<IEnumerable<VillaDTO>> GetVillas()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VillaDTO>))]
+        public ActionResult GetVillas()
         {
             return Ok(VillaStore.VillaList);           
         }
         [HttpGet("{id}")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(200)]
-        public ActionResult<VillaDTO> GetVilla(int id)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VillaDTO))]
+        public ActionResult GetVilla(int id)
         {
             if (id == 0) 
             {
