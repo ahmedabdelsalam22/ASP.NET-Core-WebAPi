@@ -12,19 +12,27 @@ namespace WebAPi.Controllers
     public class VillaAPIController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<VillaDTO> GetVillas()
+        [ProducesResponseType(200)]
+        public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
-            return VillaStore.VillaList;           
+            return Ok(VillaStore.VillaList);           
         }
         [HttpGet("{id}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
         public ActionResult<VillaDTO> GetVilla(int id)
         {
+            if (id == 0) 
+            {
+                return BadRequest();
+            }
             var villa = VillaStore.VillaList.FirstOrDefault(x=>x.Id == id);
             if (villa == null) 
             {
                 return NotFound();
             }
-            return villa;
+            return Ok(villa);
         }
     }
 }
