@@ -61,7 +61,6 @@ namespace WebAPi.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            villaDTO.Id = VillaStore.VillaList.OrderByDescending(x => x.Id).FirstOrDefault().Id + 1;
 
             VillaStore.VillaList.Add(villaDTO);
 
