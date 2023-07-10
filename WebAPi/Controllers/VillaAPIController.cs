@@ -42,6 +42,11 @@ namespace WebAPi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<VillaDTO> Create([FromBody] VillaDTO villaDTO)
         {
+            if (VillaStore.VillaList.FirstOrDefault(x => x.Name.ToLower() == villaDTO.Name.ToLower())!= null)
+            {
+                ModelState.AddModelError("CustomError","Villa already exists");
+                return BadRequest(ModelState);
+            }
             if (villaDTO == null)
             {
                 return BadRequest();
