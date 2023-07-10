@@ -62,8 +62,6 @@ namespace WebAPi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            VillaStore.VillaList.Add(villaDTO);
-
             return CreatedAtRoute("GetVilla", new { id = villaDTO.Id}, villaDTO);
         }
 
