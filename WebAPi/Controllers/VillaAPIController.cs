@@ -65,7 +65,6 @@ namespace WebAPi.Controllers
             }
             Villa villa = new() 
             {
-                Id = villaDTO.Id,
                 Name = villaDTO.Name,
                 Amenity = villaDTO.Amenity,
                 ImageUrl = villaDTO.ImageUrl,
