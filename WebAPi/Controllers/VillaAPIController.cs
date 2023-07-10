@@ -34,5 +34,26 @@ namespace WebAPi.Controllers
             }
             return Ok(villa);
         }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<VillaDTO> Create([FromBody] VillaDTO villaDTO)
+        {
+            if (villaDTO == null)
+            {
+                return BadRequest();
+            }
+            if (villaDTO.Id > 0) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            villaDTO.Id = VillaStore.VillaList.OrderByDescending(x => x.Id).FirstOrDefault().Id + 1;
+
+            VillaStore.VillaList.Add(villaDTO);
+
+            return Ok(villaDTO);
+        }
     }
 }
