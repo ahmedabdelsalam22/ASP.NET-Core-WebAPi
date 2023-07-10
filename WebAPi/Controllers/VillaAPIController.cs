@@ -61,5 +61,24 @@ namespace WebAPi.Controllers
 
             return CreatedAtRoute("GetVilla", new { id = villaDTO.Id}, villaDTO);
         }
+
+        [HttpDelete("{id}", Name = "DeleteVilla")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public ActionResult Delete(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+            var villa = VillaStore.VillaList.FirstOrDefault(x=>x.Id == id);
+            if (villa == null)
+            {
+                return NotFound();
+            }
+            VillaStore.VillaList.Remove(villa);
+
+            return NoContent();
+        }
     }
 }
