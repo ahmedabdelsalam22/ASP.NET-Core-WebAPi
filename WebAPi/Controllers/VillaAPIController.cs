@@ -11,10 +11,17 @@ namespace WebAPi.Controllers
     [ApiController]
     public class VillaAPIController : ControllerBase
     {
-        [HttpGet(Name = "GetVillas")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VillaDTO>))]
-        public ActionResult GetVillas()
+        private readonly ILogger<VillaAPIController> _logger;
+        public VillaAPIController(ILogger<VillaAPIController> logger)
         {
+            _logger = logger;
+        }
+
+        [HttpGet(Name = "GetVillas")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<VillaDTO>> GetVillas()
+        {
+            _logger.LogInformation("Getting all villas");
             return Ok(VillaStore.VillaList);           
         }
         [HttpGet("{id}",Name = "GetVilla")]
@@ -25,6 +32,7 @@ namespace WebAPi.Controllers
         {
             if (id == 0) 
             {
+                _logger.LogError($"Error when try to getting villa with id {id}");
                 return BadRequest();
             }
             var villa = VillaStore.VillaList.FirstOrDefault(x=>x.Id == id);
