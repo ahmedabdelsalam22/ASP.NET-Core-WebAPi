@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPi.Data;
 using WebAPi.Models;
 using WebAPi.Models.DTO;
 
 namespace WebAPi.Controllers
 {
-    [Route("api/VillaAPI")]
+    //[Route("api/VillaAPI")]
     [Route("api/[Controller]")]
     [ApiController]
     public class VillaAPIController : ControllerBase
@@ -13,11 +14,17 @@ namespace WebAPi.Controllers
         [HttpGet]
         public IEnumerable<VillaDTO> GetVillas()
         {
-            return new List<VillaDTO> 
+            return VillaStore.VillaList;           
+        }
+        [HttpGet("{id}")]
+        public ActionResult<VillaDTO> GetVilla(int id)
+        {
+            var villa = VillaStore.VillaList.FirstOrDefault(x=>x.Id == id);
+            if (villa == null) 
             {
-                new VillaDTO {Id = 1,Name = "Villa1"},
-                new VillaDTO {Id = 2,Name = "Villa2"},
-            };              
+                return NotFound();
+            }
+            return villa;
         }
     }
 }
