@@ -21,7 +21,6 @@ namespace WebAPi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
-            _logger.LogInformation("Getting all villas");
             return Ok(VillaStore.VillaList);           
         }
         [HttpGet("{id}",Name = "GetVilla")]
@@ -32,7 +31,6 @@ namespace WebAPi.Controllers
         {
             if (id == 0) 
             {
-                _logger.LogError($"Error when try to getting villa with id {id}");
                 return BadRequest();
             }
             var villa = VillaStore.VillaList.FirstOrDefault(x=>x.Id == id);
