@@ -142,5 +142,36 @@ namespace WebAPi.Controllers
             }
             return _response;
         }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<APIResponse>> Delete(int id)
+        {
+            try
+            {
+                if (id == 0)
+                {
+                    return BadRequest();
+                }
+                var villaNumber = await _repository.GetAsync(filter: x => x.VillaNo == id);
+                if (villaNumber == null)
+                {
+                    return NotFound();
+                }
+                await _repository.RemoveAsync(villaNumber);
+
+                _response.StatusCode = HttpStatusCode.NoContent;
+                _response.IsSuccess = true;
+
+                return Ok(_response);
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessage = new List<string>() { e.ToString() };
+            }
+            return _response;
+        }
     }
 }
