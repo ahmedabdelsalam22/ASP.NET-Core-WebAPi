@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebAPi.Models
 {
-    public class VillaNumber
+    public class Villa
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

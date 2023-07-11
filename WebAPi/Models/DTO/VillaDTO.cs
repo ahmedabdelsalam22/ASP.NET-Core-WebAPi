@@ -2,7 +2,7 @@
 
 namespace WebAPi.Models.DTO
 {
-    public class VillaUpdateDTO
+    public class VillaDTO
     {
         public int Id { get; set; }
         [Required]

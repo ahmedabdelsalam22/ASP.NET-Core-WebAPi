@@ -9,15 +9,15 @@ namespace WebAPi
         public MappingProfile()
         {
             // Add as many of these lines as you need to map your objects
-            CreateMap<VillaNumber, VillaDTO>();
-            CreateMap<VillaDTO, VillaNumber>();
+            CreateMap<Villa, VillaDTO>();
+            CreateMap<VillaDTO, Villa>();
 
-            CreateMap<VillaNumber, VillaCreateDTO>().ReverseMap();
-            CreateMap<VillaNumber, VillaUpdateDTO>().ReverseMap();
+            CreateMap<Villa, VillaCreateDTO>().ReverseMap();
+            CreateMap<Villa, VillaUpdateDTO>().ReverseMap();
 
             CreateMap<VillaNumber, VillaNumberDTO>();
 
-
+           
             CreateMap<VillaNumber, VillaNumberCreateDTO>().ReverseMap();
             CreateMap<VillaNumber, VillaNumberUpdateDTO>().ReverseMap();
 
