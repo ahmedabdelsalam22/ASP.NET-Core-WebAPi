@@ -92,8 +92,7 @@ namespace WebAPi.Controllers
 
             Villa villa = _mapper.Map<Villa>(villaDTO);
 
-            _db.Villas.Update(villa);
-            await _db.SaveChangesAsync();
+            await _repository.UpdateAsync(villa);
 
             return NoContent();
         }
