@@ -24,6 +24,12 @@ namespace WebAPi.Repository
             await SaveAsync();
         }
 
+        public async Task UpdateAsync(Villa entity)
+        {
+            _dbset.Update(entity);
+            await SaveAsync();
+        }
+
         public async Task<Villa> GetAsync(Expression<Func<Villa,bool>> filter = null, bool tracked = true)
         {
             IQueryable<Villa> query = _dbset;
