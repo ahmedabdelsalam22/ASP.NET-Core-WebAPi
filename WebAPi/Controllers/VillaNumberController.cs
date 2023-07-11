@@ -54,7 +54,7 @@ namespace WebAPi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> GetVilla(int id)
+        public async Task<ActionResult<APIResponse>> GetVillaNumber(int id)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace WebAPi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<APIResponse>> CreateVilla([FromBody] VillaNumberCreateDTO dTO)
+        public async Task<ActionResult<APIResponse>> CreateVillaNumber([FromBody] VillaNumberCreateDTO dTO)
         {
             try
             {
@@ -103,6 +103,33 @@ namespace WebAPi.Controllers
                 VillaNumber villaNumber = _mapper.Map<VillaNumber>(dTO);
                 await _repository.CreateAsync(villaNumber);
 
+                _response.IsSuccess = true;
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.Result = villaNumber;
+                return Ok(_response);
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessage = new List<String> { e.ToString() };
+            }
+            return _response;
+        }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<APIResponse>> UpdateVillaNumber(int id, [FromBody] VillaNumberUpdateDTO dTO)
+        {
+            try
+            {
+                if (dTO == null || id != dTO.VillaNo)
+                {
+                    return BadRequest();
+                }
+                VillaNumber villaNumber = _mapper.Map<VillaNumber>(dTO);
+                await _repository.Updateasync(villaNumber);
                 _response.IsSuccess = true;
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = villaNumber;
