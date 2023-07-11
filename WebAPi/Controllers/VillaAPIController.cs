@@ -42,7 +42,7 @@ namespace WebAPi.Controllers
         [HttpGet("{id}",Name = "GetVilla")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VillaDTO))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
         public async Task<ActionResult> GetVilla(int id)
         {
             if (id == 0) 
@@ -57,7 +57,12 @@ namespace WebAPi.Controllers
                 return NotFound();
             }
             VillaDTO villaDTO = _mapper.Map<VillaDTO>(villa);
-            return Ok(villaDTO);
+
+            _response.Result = villaDTO;
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+
+            return Ok(_response);
         }
 
         [HttpPost]
