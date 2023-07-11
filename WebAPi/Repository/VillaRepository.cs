@@ -18,13 +18,13 @@ namespace WebAPi.Repository
             _dbset = _db.Set<Villa>();
         }
 
-        public async Task Create(Villa entity)
+        public async Task CreateAsync(Villa entity)
         {
             await _dbset.AddAsync(entity);
-            await Save();
+            await SaveAsync();
         }
 
-        public async Task<Villa> Get(Expression<Func<Villa,bool>> filter = null, bool tracked = true)
+        public async Task<Villa> GetAsync(Expression<Func<Villa,bool>> filter = null, bool tracked = true)
         {
             IQueryable<Villa> query = _dbset;
             if (!tracked)
@@ -38,7 +38,7 @@ namespace WebAPi.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<List<Villa>> GetAll(Expression<Func<Villa,bool>> filter = null)
+        public async Task<List<Villa>> GetAllAsync(Expression<Func<Villa,bool>> filter = null)
         {
             IQueryable<Villa> query = _dbset;
             if(filter != null)
@@ -48,13 +48,13 @@ namespace WebAPi.Repository
             return await query.ToListAsync();
         }
 
-        public async Task Remove(Villa entity)
+        public async Task RemoveAsync(Villa entity)
         {
              _dbset.Remove(entity);
-             await Save();
+             await SaveAsync();
         }
 
-        public async Task Save()
+        public async Task SaveAsync()
         {
             await _db.SaveChangesAsync();
         }

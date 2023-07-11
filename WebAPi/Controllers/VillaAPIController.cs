@@ -28,7 +28,7 @@ namespace WebAPi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<VillaDTO>>> GetVillas()
         {
-            IEnumerable<Villa> villas = await _repository.GetAll();
+            IEnumerable<Villa> villas = await _repository.GetAllAsync();
 
             var villaDTO = _mapper.Map<IEnumerable<VillaDTO>>(villas);
 
@@ -45,7 +45,7 @@ namespace WebAPi.Controllers
                 return BadRequest();
             }
 
-            Villa? villa = await _repository.Get(filter: x=>x.Id == id);
+            Villa? villa = await _repository.GetAsync(filter: x=>x.Id == id);
 
             if (villa == null) 
             {
@@ -62,7 +62,7 @@ namespace WebAPi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<VillaDTO>> Create([FromBody] VillaCreateDTO villaCreateDTO)
         {
-            if (await _repository.Get(filter: x => x.Name.ToLower() == villaCreateDTO.Name.ToLower()) != null)
+            if (await _repository.GetAsync(filter: x => x.Name.ToLower() == villaCreateDTO.Name.ToLower()) != null)
             {
                 ModelState.AddModelError("CustomError", "Villa already exists");
                 return BadRequest(ModelState);
@@ -74,7 +74,7 @@ namespace WebAPi.Controllers
 
             Villa villa = _mapper.Map<Villa>(villaCreateDTO);
 
-            await _repository.Create(villa);
+            await _repository.CreateAsync(villa);
 
             return CreatedAtRoute("GetVilla", new { id = villa.Id}, villa);
         }
@@ -108,12 +108,12 @@ namespace WebAPi.Controllers
             {
                 return BadRequest();
             }
-            var villa = await _repository.Get(filter: x => x.Id == id);
+            var villa = await _repository.GetAsync(filter: x => x.Id == id);
             if (villa == null)
             {
                 return NotFound();
             }
-            await _repository.Remove(villa);
+            await _repository.RemoveAsync(villa);
 
             return NoContent();
         }
