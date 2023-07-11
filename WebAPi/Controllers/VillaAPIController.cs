@@ -31,7 +31,7 @@ namespace WebAPi.Controllers
         {
             try
             {
-                IEnumerable<VillaNumber> villas = await _repository.GetAllAsync();
+                IEnumerable<Villa> villas = await _repository.GetAllAsync();
 
                 var villaDTO = _mapper.Map<IEnumerable<VillaDTO>>(villas);
 
@@ -61,7 +61,7 @@ namespace WebAPi.Controllers
                     return BadRequest();
                 }
 
-                VillaNumber? villa = await _repository.GetAsync(filter: x => x.Id == id);
+                Villa? villa = await _repository.GetAsync(filter: x => x.Id == id);
 
                 if (villa == null)
                 {
@@ -101,7 +101,7 @@ namespace WebAPi.Controllers
                     return BadRequest();
                 }
 
-                VillaNumber villa = _mapper.Map<VillaNumber>(villaCreateDTO);
+                Villa villa = _mapper.Map<Villa>(villaCreateDTO);
 
                 await _repository.CreateAsync(villa);
                 _response.Result = villa;
@@ -132,7 +132,7 @@ namespace WebAPi.Controllers
                     return BadRequest();
                 }
 
-                VillaNumber villa = _mapper.Map<VillaNumber>(villaDTO);
+                Villa villa = _mapper.Map<Villa>(villaDTO);
 
                 await _repository.UpdateAsync(villa);
 

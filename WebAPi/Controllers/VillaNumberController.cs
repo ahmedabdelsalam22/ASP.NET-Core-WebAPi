@@ -18,11 +18,11 @@ namespace WebAPi.Controllers
         private readonly IVillaNumberRepository _repository;
 
 
-        public VillaNumberController(IMapper mapper, IVillaNumberRepository repository, APIResponse response)
+        public VillaNumberController(IMapper mapper, IVillaNumberRepository repository)
         {
             _mapper = mapper;
             _repository = repository;
-            _response = response;
+            _response = new();
         }
 
         [HttpGet]
@@ -82,5 +82,38 @@ namespace WebAPi.Controllers
             return _response;
         }
 
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult<APIResponse>> CreateVilla([FromBody] VillaNumberCreateDTO dTO)
+        {
+            try
+            {
+                if (await _repository.GetAsync(filter: x => x.VillaNo == dTO.VillaNo) != null)
+                {
+                    ModelState.AddModelError("CustomError", "VillaNumber is already exists");
+                    return Ok(ModelState);
+                }
+                if (dTO == null)
+                {
+                    return BadRequest();
+                }
+                VillaNumber villaNumber = _mapper.Map<VillaNumber>(dTO);
+                await _repository.CreateAsync(villaNumber);
+
+                _response.IsSuccess = true;
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.Result = villaNumber;
+                return Ok(_response);
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessage = new List<String> { e.ToString() };
+            }
+            return _response;
+        }
     }
 }

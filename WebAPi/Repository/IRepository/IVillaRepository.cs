@@ -3,8 +3,8 @@ using WebAPi.Models;
 
 namespace WebAPi.Repository.IRepository
 {
-    public interface IVillaRepository : IRepository<VillaNumber>
+    public interface IVillaRepository : IRepository<Villa>
     {
-        Task<VillaNumber> UpdateAsync(VillaNumber entity);
+        Task<Villa> UpdateAsync(Villa entity);
     }
 }

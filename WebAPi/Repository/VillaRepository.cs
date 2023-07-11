@@ -7,7 +7,7 @@ using WebAPi.Repository.IRepository;
 
 namespace WebAPi.Repository
 {
-    public class VillaRepository : Repository<VillaNumber>,IVillaRepository
+    public class VillaRepository : Repository<Villa>,IVillaRepository
     {
         private readonly ApplicationDbContext _db;
 
@@ -16,7 +16,7 @@ namespace WebAPi.Repository
             _db = db;
         }
 
-        public async Task<VillaNumber> UpdateAsync(VillaNumber entity)
+        public async Task<Villa> UpdateAsync(Villa entity)
         {
              _db.Villas.Update(entity);
             await _db.SaveChangesAsync();
