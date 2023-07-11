@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using WebAPi.Data;
 using WebAPi.Models;
 using WebAPi.Models.DTO;
@@ -16,21 +17,27 @@ namespace WebAPi.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IVillaRepository _repository;
+        private APIResponse _response;
         public VillaAPIController(IVillaRepository repository, IMapper mapper)
         {
             _mapper = mapper;
             _repository = repository;
+            _response = new();
         }
 
         [HttpGet(Name = "GetVillas")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<VillaDTO>>> GetVillas()
+        public async Task<ActionResult<APIResponse>> GetVillas()
         {
             IEnumerable<Villa> villas = await _repository.GetAllAsync();
 
             var villaDTO = _mapper.Map<IEnumerable<VillaDTO>>(villas);
 
-            return Ok(villaDTO);           
+            _response.Result = villaDTO;
+            _response.IsSuccess = true;
+            _response.StatusCode = HttpStatusCode.OK;
+
+            return Ok(_response);           
         }
         [HttpGet("{id}",Name = "GetVilla")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
