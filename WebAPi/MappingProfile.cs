@@ -18,6 +18,12 @@ namespace WebAPi
             CreateMap<VillaNumber, VillaNumberDTO>();
             CreateMap<VillaNumberDTO, VillaNumber>();
 
+            CreateMap<VillaNumber, VillaNumberDTO>();
+            CreateMap<VillaNumberDTO, VillaNumber>();
+
+            CreateMap<VillaNumber, VillaNumberCreateDTO>().ReverseMap();
+            CreateMap<VillaNumber, VillaNumberUpdateDTO>().ReverseMap();
+
         }
     }
 }
