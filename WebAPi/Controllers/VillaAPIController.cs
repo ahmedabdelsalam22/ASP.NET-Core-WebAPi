@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using WebAPi.Data;
 using WebAPi.Models;
 using WebAPi.Models.DTO;
+using WebAPi.Repository.IRepository;
 
 namespace WebAPi.Controllers
 {
@@ -15,17 +16,19 @@ namespace WebAPi.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly IMapper _mapper;
-        public VillaAPIController(ApplicationDbContext db, IMapper iMapper)
+        private readonly IVillaRepository _repository;
+        public VillaAPIController(ApplicationDbContext db, IMapper iMapper, IVillaRepository repository)
         {
             _db = db;
             _mapper = iMapper;
+            _repository = repository;
         }
 
         [HttpGet(Name = "GetVillas")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<VillaDTO>>> GetVillas()
         {
-            IEnumerable<Villa> villas = await _db.Villas.AsNoTracking().ToListAsync();
+            IEnumerable<Villa> villas = await _repository.GetAll();
 
             var villaDTO = _mapper.Map<IEnumerable<VillaDTO>>(villas);
 
@@ -42,7 +45,7 @@ namespace WebAPi.Controllers
                 return BadRequest();
             }
 
-            Villa? villa = await _db.Villas.AsNoTracking().FirstOrDefaultAsync(x=>x.Id == id);
+            Villa? villa = await _repository.Get(filter: x=>x.Id == id);
 
             if (villa == null) 
             {
@@ -59,7 +62,7 @@ namespace WebAPi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<VillaDTO>> Create([FromBody] VillaCreateDTO villaCreateDTO)
         {
-            if (await _db.Villas.AsNoTracking().FirstOrDefaultAsync(x => x.Name.ToLower() == villaCreateDTO.Name.ToLower()) != null)
+            if (await _repository.Get(filter: x => x.Name.ToLower() == villaCreateDTO.Name.ToLower()) != null)
             {
                 ModelState.AddModelError("CustomError", "Villa already exists");
                 return BadRequest(ModelState);
@@ -71,8 +74,7 @@ namespace WebAPi.Controllers
 
             Villa villa = _mapper.Map<Villa>(villaCreateDTO);
 
-            await _db.Villas.AddAsync(villa);
-            await _db.SaveChangesAsync();
+            await _repository.Create(villa);
 
             return CreatedAtRoute("GetVilla", new { id = villa.Id}, villa);
         }
@@ -106,13 +108,12 @@ namespace WebAPi.Controllers
             {
                 return BadRequest();
             }
-            var villa = await _db.Villas.FirstOrDefaultAsync(x => x.Id == id);
+            var villa = await _repository.Get(filter: x => x.Id == id);
             if (villa == null)
             {
                 return NotFound();
             }
-            _db.Villas.Remove(villa);
-            await _db.SaveChangesAsync();
+            await _repository.Remove(villa);
 
             return NoContent();
         }
