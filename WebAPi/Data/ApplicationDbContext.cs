@@ -9,13 +9,13 @@ namespace WebAPi.Data
         {
         }
 
-        public DbSet<Villa> Villas { get; set; }
+        public DbSet<VillaNumber> Villas { get; set; }
         public DbSet<VillaNumber> VillaNumbers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Villa>().HasData(
-              new Villa
+            modelBuilder.Entity<VillaNumber>().HasData(
+              new VillaNumber
                 {
                     Id = 1,
                     Name = "Royal Villa",
@@ -27,7 +27,7 @@ namespace WebAPi.Data
                     Amenity = "",
                     CreatedDate = DateTime.Now
                 },
-              new Villa
+              new VillaNumber
               {
                   Id = 2,
                   Name = "Premium Pool Villa",
@@ -39,7 +39,7 @@ namespace WebAPi.Data
                   Amenity = "",
                   CreatedDate = DateTime.Now
               },
-              new Villa
+              new VillaNumber
               {
                   Id = 3,
                   Name = "Luxury Pool Villa",
@@ -51,7 +51,7 @@ namespace WebAPi.Data
                   Amenity = "",
                   CreatedDate = DateTime.Now
               },
-              new Villa
+              new VillaNumber
               {
                   Id = 4,
                   Name = "Diamond Villa",
@@ -63,7 +63,7 @@ namespace WebAPi.Data
                   Amenity = "",
                   CreatedDate = DateTime.Now
               },
-              new Villa
+              new VillaNumber
               {
                   Id = 5,
                   Name = "Diamond Pool Villa",
