@@ -51,16 +51,18 @@ namespace WebAPi.Controllers
         }
 
         [HttpGet("{id}")]
-
-        public async Task<ActionResult<APIResponse>> GetVilla(int villaNo)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<APIResponse>> GetVilla(int id)
         {
             try
             {
-                if (villaNo == 0)
+                if (id == 0)
                 {
                     return BadRequest();
                 }
-                VillaNumber villaNumber = await _repository.GetAsync(filter: x => x.VillaNo == villaNo);
+                VillaNumber villaNumber = await _repository.GetAsync(filter: x => x.VillaNo == id);
                 if (villaNumber == null)
                 {
                     return NotFound();
