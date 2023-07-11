@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using WebAPi;
 using WebAPi.Data;
+using WebAPi.Repository;
+using WebAPi.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,7 @@ builder.Services.AddControllers(opt =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IVillaRepository,VillaRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
