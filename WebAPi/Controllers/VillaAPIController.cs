@@ -14,9 +14,11 @@ namespace WebAPi.Controllers
     [ApiController]
     public class VillaAPIController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IVillaRepository _repository;
-        public VillaAPIController(ApplicationDbContext db, IMapper iMapper, IVillaRepository repository)
+        public VillaAPIController(IVillaRepository repository, IMapper mapper)
         {
+            _mapper = mapper;
             _repository = repository;
         }
 
