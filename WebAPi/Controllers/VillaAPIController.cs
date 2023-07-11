@@ -27,7 +27,7 @@ namespace WebAPi.Controllers
         {
             IEnumerable<Villa> villas = await _db.Villas.AsNoTracking().ToListAsync();
 
-            VillaDTO villaDTO = _mapper.Map<VillaDTO>(villas);
+            var villaDTO = _mapper.Map<IEnumerable<VillaDTO>>(villas);
 
             return Ok(villaDTO);           
         }
