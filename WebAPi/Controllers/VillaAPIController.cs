@@ -86,7 +86,6 @@ namespace WebAPi.Controllers
 
             await _repository.CreateAsync(villa);
 
-            return CreatedAtRoute("GetVilla", new { id = villa.Id}, villa);
         }
 
 
