@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace WebAPi.Models
+namespace Web_mvc.Models
 {
     public class APIResponse
     {
