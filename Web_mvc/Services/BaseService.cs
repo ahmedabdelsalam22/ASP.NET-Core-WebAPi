@@ -59,12 +59,11 @@ namespace Web_mvc.Services
 
                 var APIResponse = JsonConvert.DeserializeObject<T>(apiContent);
                 return APIResponse;
-            }
-            catch (Exception e)
+            }catch (Exception e)
             {
                 var dto = new APIResponse
                 {
-                    ErrorMessage = new List<string> { Convert.ToString(ex.Message) },
+                    ErrorMessage = new List<string> { Convert.ToString(e.Message) },
                     IsSuccess = false
                 };
                 var res = JsonConvert.SerializeObject(dto);

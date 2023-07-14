@@ -39,7 +39,7 @@ namespace Web_mvc.Services
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = ApiType.GET,
-                Url = _villaUrl + "api/VillaAPI/"
+                Url = _villaUrl + "api/VillaAPI"
             });
         }
 
