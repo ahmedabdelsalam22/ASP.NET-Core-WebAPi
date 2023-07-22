@@ -16,7 +16,13 @@ namespace WebAPi.Repository
 
         public bool IsUniqueUser(string username)
         {
-            throw new NotImplementedException();
+            var user = _dbContext.LocalUsers.FirstOrDefault(x=>x.UserName == username);
+
+            if (user != null)
+            {
+                return false;
+            }
+            return true;
         }
 
         public Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
@@ -24,9 +30,19 @@ namespace WebAPi.Repository
             throw new NotImplementedException();
         }
 
-        public Task<LocalUser> Register(RegisterationRequestDTO registerationRequestDTO)
+        public async Task<LocalUser> Register(RegisterationRequestDTO registerationRequestDTO)
         {
-            throw new NotImplementedException();
+            LocalUser user = new LocalUser()
+            {
+                UserName = registerationRequestDTO.UserName,
+                Name = registerationRequestDTO.Name,
+                Password = registerationRequestDTO.Password,
+                Role = registerationRequestDTO.Role,
+            };
+            _dbContext.LocalUsers.Add(user);
+            await _dbContext.SaveChangesAsync();
+            user.Password = "";
+            return user;
         }
     }
 }
