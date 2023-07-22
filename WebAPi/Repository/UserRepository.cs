@@ -33,11 +33,15 @@ namespace WebAPi.Repository
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
             var user = _dbContext.LocalUsers.FirstOrDefault(x=>x.UserName.ToLower() == loginRequestDTO.UserName.ToLower()
-            || x.Password == loginRequestDTO.Password);
+            && x.Password == loginRequestDTO.Password);
 
             if (user == null)
             {
-                return null;
+                return new LoginResponseDTO()
+                {
+                    User = null,
+                    Token = ""
+                };
             }
 
             // if user is found generate JWT token
