@@ -1,4 +1,3 @@
-﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using WebAPi.Models;
@@ -26,7 +25,6 @@ namespace WebAPi.Controllers
             var loginResponse = await _repository.Login(dTO);
             if (loginResponse.User == null || string.IsNullOrEmpty(loginResponse.Token))
             {
-                
                 _APIResponse.StatusCode = HttpStatusCode.BadRequest;
                 _APIResponse.IsSuccess = false;
                 _APIResponse.ErrorMessage.Add("Username or password is incorrect");
