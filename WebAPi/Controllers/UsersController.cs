@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using WebAPi.Models;
 using WebAPi.Models.DTO;
@@ -11,7 +11,7 @@ namespace WebAPi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _repository;
-        private readonly APIResponse _APIResponse;
+        protected APIResponse _APIResponse;
 
         public UsersController(IUserRepository repository)
         {
@@ -19,7 +19,9 @@ namespace WebAPi.Controllers
             _APIResponse = new();
         }
 
-        [HttpPost]
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO dTO)
         {
             var loginResponse = await _repository.Login(dTO);
@@ -27,7 +29,7 @@ namespace WebAPi.Controllers
             {
                 _APIResponse.StatusCode = HttpStatusCode.BadRequest;
                 _APIResponse.IsSuccess = false;
-                _APIResponse.ErrorMessage.Add("Username or password is incorrect");
+                _APIResponse.ErrorMessage = new List<string>() { "Username or password is incorrect" };
                 return BadRequest(_APIResponse);
             }
             _APIResponse.StatusCode = HttpStatusCode.OK;
@@ -35,8 +37,9 @@ namespace WebAPi.Controllers
             _APIResponse.Result = loginResponse;
             return Ok(_APIResponse);
         }
-
-        [HttpPost]
+        [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Register([FromBody] RegisterationRequestDTO dTO)
         {
             bool ifUserNameIsUnique = _repository.IsUniqueUser(dTO.UserName);
@@ -47,7 +50,7 @@ namespace WebAPi.Controllers
                 _APIResponse.ErrorMessage.Add("Username already exists");
                 return BadRequest(_APIResponse);
             }
-            var user =await _repository.Register(dTO);
+            var user = await _repository.Register(dTO);
             if (user == null)
             {
                 _APIResponse.StatusCode = HttpStatusCode.BadRequest;
@@ -57,6 +60,7 @@ namespace WebAPi.Controllers
             }
             _APIResponse.StatusCode = HttpStatusCode.OK;
             _APIResponse.IsSuccess = true;
+           // _APIResponse.Result = user;
             return Ok(_APIResponse);
         }
     }
