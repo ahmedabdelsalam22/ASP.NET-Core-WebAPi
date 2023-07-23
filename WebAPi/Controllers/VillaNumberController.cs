@@ -11,8 +11,10 @@ using WebAPi.Repository.IRepository;
 
 namespace WebAPi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class VillaNumberController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -30,7 +32,7 @@ namespace WebAPi.Controllers
         [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<APIResponse>> GetAllVillaNumbers()
         {
             try
@@ -51,6 +53,14 @@ namespace WebAPi.Controllers
                 _response.ErrorMessage = new List<String> { e.ToString()};
             }
             return _response;
+        }
+
+        
+        [HttpGet]
+        [MapToApiVersion("2.0")]
+        public IEnumerable<string> Get()
+        {
+            return new string[] {"val1,val2" };
         }
 
         [HttpGet("{id}")]

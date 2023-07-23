@@ -12,8 +12,9 @@ using WebAPi.Repository.IRepository;
 namespace WebAPi.Controllers
 {
     //[Route("api/VillaAPI")]
-    [Route("api/[Controller]")]
+    [Route("api/v{version:apiVersion}/[Controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class VillaAPIController : ControllerBase
     {
         private readonly IMapper _mapper;
