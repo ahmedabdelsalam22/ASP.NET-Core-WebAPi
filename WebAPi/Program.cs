@@ -8,6 +8,7 @@ using WebAPi;
 using WebAPi.Data;
 using WebAPi.Repository;
 using WebAPi.Repository.IRepository;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -90,7 +91,17 @@ builder.Services.AddScoped<IVillaRepository,VillaRepository>();
 builder.Services.AddScoped<IVillaNumberRepository,VillaNumberRepository>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddApiVersioning();
+builder.Services.AddApiVersioning(options => 
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion =new ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+});
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true; //this line to put version number in endPoint url automatically 
+});
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
